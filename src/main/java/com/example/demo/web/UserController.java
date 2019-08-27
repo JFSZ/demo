@@ -1,6 +1,7 @@
 package com.example.demo.web;
 
 import com.example.demo.annotation.Log;
+import com.example.demo.annotation.UserBody;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.RedisUtil;
@@ -25,8 +26,8 @@ public class UserController {
     private RedisUtil redisUtil;
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public void save(@RequestBody User user){
-        redisUtil.set("user",user,30000);
+    public void save(@UserBody User user){
+        //redisUtil.set("user",user,30000);
         service.save(user);
     }
 

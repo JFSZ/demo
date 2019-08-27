@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
@@ -15,7 +16,7 @@ import java.util.Date;
 
 /**
  * @author chenxue
- * @Description TODO
+ * @Description
  * @Date 2019/8/15 14:55
  */
 
@@ -33,11 +34,14 @@ public class TestDemo {
 
     @Test
     public void demo2(){
-        Date date = Date.from(LocalDateTime.now().atZone(ZoneId.of("Asia/Shanghai")).toInstant());
+       /* Date date = Date.from(LocalDateTime.now().atZone(ZoneId.of("Asia/Shanghai")).toInstant());
         System.out.println(date);
         DateTimeFormatter dateTimeFormatter= DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
         String st = dateTimeFormatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(new Date().getTime()), ZoneId.of("Asia/Shanghai")));
-        System.out.println(st);
+        System.out.println(st);*/
+
+        System.out.println(StringUtils.isBlank("  "));
+        System.out.println(StringUtils.isEmpty("  "));
     }
 
 }
