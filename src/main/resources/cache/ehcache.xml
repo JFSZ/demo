@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ehcache updateCheck="false" dynamicConfig="false">
-    <diskStore path="java.io.tmpdir"/>
+<ehcache updateCheck="false">
+    <!--磁盘存储路径。在内存缓存满时，ehcache会将缓存存入配置目录 -->
+    <diskStore path="E:\\EhCache"/>
+    <!--
+        defaultCache: ehcache默认的缓存策略
+        maxElementsInMemory：内存中最大缓存。如果超过则有两种解决办法
+            1、如果配置了overflowToDisk = true 则存放在磁盘中
+            2、overflowToDisk = false 则 memoryStoreEvictionPolicy 策略替换cache中原有元素
+        overflowToDisk：内存不足时，是否开启磁盘缓存
+        eternal:缓存中对象是否永久有效
+        timeToIdleSeconds:缓存数据在失效前允许闲置时间(单位：秒)
+        timeToLiveSeconds: 缓存数据总的存货时间(秒)
+    -->
+    <defaultCache
+            maxElementsInMemory="1"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            maxElementsOnDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+        <persistence strategy="localTempSwap"/>
+    </defaultCache>
 
-    <cache name="users" timeToLiveSeconds="300"/>
-
+    <cache name="user" maxElementsInMemory="1000"/>
 </ehcache>

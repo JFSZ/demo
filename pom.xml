@@ -97,9 +97,16 @@
         </dependency>
 
         <!--ehcache 2.x版本-->
-        <!--<dependency>
+        <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
+        </dependency>
+
+        <!--ehcache 3.x版本-->
+        <!--<dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.5.2</version>
         </dependency>-->
 
         <!--集成 redis-->
