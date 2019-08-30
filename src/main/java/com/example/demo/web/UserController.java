@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author chenxue
  * @Description 用户Controller 测试缓存cache基本用法
@@ -48,6 +50,14 @@ public class UserController {
     @CacheEvict(value = "user",key = "#id")
     public void delete(@RequestParam Integer id){
         service.removeById(id);
+    }
+
+    @RequestMapping(value = "/getUserList",method = RequestMethod.GET)
+    @Cacheable(cacheNames = "userList")
+    @Log(methodName = "getUserList",operateName = "Tom")
+    public List<User> getUserList(){
+        System.out.println("查询所有员工");
+        return service.list();
     }
 
 }

@@ -3,3 +3,5 @@ server:
 spring:
   profiles:
     active: dev
+  main:
+    banner-mode: console #打印 banner 到控制台

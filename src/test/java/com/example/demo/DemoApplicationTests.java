@@ -2,20 +2,25 @@ package com.example.demo;
 
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemoApplicationTests {
 
-    @Autowired
+    @Resource
+    private CacheManager cacheManager;
+    @Resource
     private UserDao userDao;
     @Test
     public void contextLoads() {
@@ -23,6 +28,17 @@ public class DemoApplicationTests {
         Assert.assertEquals(5,userList.size());
         userList.forEach(System.out::println);
 
+    }
+
+
+    @Test
+    public void test1(){
+        System.out.println(StringUtils.join(cacheManager.getCacheNames(),","));
+        Cache cache = cacheManager.getCache("user");
+        cache.put("key","123");
+        System.out.println("缓存成功");
+        String res = cache.get("key",String.class);
+        System.out.println(res);
     }
 
 }

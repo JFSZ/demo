@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+        property 定义属性，方便下面使用
+        LOG_DIR：日志文件 ./log 当前目录下
+        MAX_FILE_SIZE ： 日志文件最大的大小
+        MAX_DAY: 日志文件保存天数
+    -->
+
+    <property name="LOG_DIR" value="./log"></property>
+    <property name="MAX_FILE_SIZE" value="10MB"></property>
+    <property name="MAX_DAY" value="30"></property>
+    <!--
+        appender: 负责写日志的组件,主要用于指定日志输出的目的地
+        主要有三种类型：ConsoleAppender、FileAppender、RollingFileAppender
+        ConsoleAppender:把日志输到控制台
+        FileAppender:把日志输到文件
+        RollingFileAppender:把日志输到文件并且进行定期的清理
+    -->
+    <appender></appender>
+    <!--logger:日志的记录器-->
+    <logger></logger>
+    <root></root>
+
+
+    <!-- 开发、测试环境 -->
+    <springProfile name="dev,test">
+        <logger name="org.springframework.web" level="INFO"/>
+        <logger name="org.springboot.sample" level="INFO" />
+        <logger name="com.yicheejia" level="INFO">
+            <appender-ref ref="FILE"></appender-ref>
+        </logger>
+    </springProfile>
+
+    <!-- 生产环境 -->
+    <springProfile name="prod">
+        <logger name="org.springframework.web" level="ERROR"/>
+        <logger name="org.springboot.sample" level="ERROR" />
+        <logger name="com.yicheejia" level="ERROR" />
+    </springProfile>
+
+</configuration>

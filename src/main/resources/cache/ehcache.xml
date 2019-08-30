@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache updateCheck="false">
     <!--磁盘存储路径。在内存缓存满时，ehcache会将缓存存入配置目录 -->
-    <diskStore path="E:\\EhCache"/>
+    <diskStore path="E:\EhCache\log.txt"/>
     <!--
         defaultCache: ehcache默认的缓存策略
         maxElementsInMemory：内存中最大缓存。如果超过则有两种解决办法
@@ -23,5 +23,6 @@
         <persistence strategy="localTempSwap"/>
     </defaultCache>
 
-    <cache name="user" maxElementsInMemory="1000"/>
+    <cache name="user" maxElementsInMemory="1"/>
+    <cache name="userList" maxElementsInMemory="1"/>
 </ehcache>

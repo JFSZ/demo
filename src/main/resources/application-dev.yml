@@ -7,6 +7,7 @@ spring:
   cache:
     ehcache:
       config: classpath:cache/ehcache.xml #制定配置文件路径
+    type: ehcache
   redis:
     database: 0
     host: 127.0.0.1
