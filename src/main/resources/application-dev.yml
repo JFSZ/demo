@@ -24,3 +24,7 @@ spring:
         # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认-1
         max-wait: -1
     timeout: 30000
+  activiti:
+    check-process-definitions: false #设置为不校验 processes 文件 .bpmn
+logging:
+  config: classpath:logback-spring.xml
