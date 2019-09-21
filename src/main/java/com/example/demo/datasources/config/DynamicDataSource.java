@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * @author chenxue
+ * @author chenxue 动态数据源切换
  * @Description
  * @Date 2019/9/20 11:33
  */
