@@ -33,7 +33,7 @@ public class ActivityServiceImpl implements ActivityService {
         Map<String,Object> map = new HashMap<>();
         map.put("apply","zhangsan");
         map.put("approve","lisi");
-        ExecutionEntity pil = (ExecutionEntity) runtimeService.startProcessInstanceById("leave",map);
+        ExecutionEntity pil = (ExecutionEntity) runtimeService.startProcessInstanceByKey("myProcess_1",map);
         List<Task> taskList = taskService.createTaskQuery().taskAssignee("zhangsan").list();
         System.out.println(taskList.size());
         //当前任务代办人

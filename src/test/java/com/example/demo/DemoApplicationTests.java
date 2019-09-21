@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.dao.UserDao;
+import com.example.demo.datasources.annotation.DataSource;
 import com.example.demo.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
@@ -39,6 +40,20 @@ public class DemoApplicationTests {
         System.out.println("缓存成功");
         String res = cache.get("key",String.class);
         System.out.println(res);
+    }
+
+    @Test
+    public void test2(){
+        User user = userDao.selectById(1);
+        user.setName("测试1");
+        userDao.updateById(user);
+    }
+    @Test
+    @DataSource(name = "ds2")
+    public void test3(){
+        User user = userDao.selectById(1);
+        user.setName("测试2");
+        userDao.updateById(user);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.demo.web;
 
 import com.example.demo.annotation.Log;
+import com.example.demo.datasources.annotation.DataSource;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.RedisUtil;
@@ -55,6 +56,7 @@ public class UserController {
     @RequestMapping(value = "/getUserList",method = RequestMethod.GET)
     @Cacheable(cacheNames = "userList")
     @Log(methodName = "getUserList",operateName = "Tom")
+    @DataSource(name = "ds1")
     public List<User> getUserList(){
         System.out.println("查询所有员工");
         return service.list();

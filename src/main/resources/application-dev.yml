@@ -1,9 +1,46 @@
 spring:
   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT
-    username: root
-    password: root
+    druid:
+      ds1:
+        url: jdbc:mysql://localhost:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT
+        username: root
+        password: root
+      ds2:
+        url: jdbc:mysql://localhost:3306/test1?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT
+        username: root
+        password: root
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 12000000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 2000
+      time-between-eviction-runs-millis: 12000000   # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filter:
+        stat: # 监控配置
+          log-slow-sql: true
+          merge-sql: true
+          slow-sql-millis: 1000
+        wall: # 防火墙配置
+          config:
+            multi-statement-allow: true
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+      stat-view-servlet:
+        url-pattern: "/druid/*"
+        allow: 127.0.0.1,10.1.1.28 # ip 白名单
+        deny: 10.1.1.29  # ip黑名单 同时存在优先级大于 allow
+        reset-enable: false # 禁用HTML页面上的rest all 功能
+        login-username: admin
+        login-password: 123456
+
   cache:
     ehcache:
       config: classpath:cache/ehcache.xml #制定配置文件路径
