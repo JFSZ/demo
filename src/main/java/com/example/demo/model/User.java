@@ -10,11 +10,8 @@ import java.io.Serializable;
  * @Description User实体类
  * @Date 2019/8/15 15:10
  */
-@Setter
-@Getter
+@Data
 @TableName("user")
-@AllArgsConstructor
-@NoArgsConstructor
 public class User implements Serializable {
     private Long id;
     private String name;
