@@ -63,5 +63,7 @@ spring:
     timeout: 30000
   activiti:
     check-process-definitions: false #设置为不校验 processes 文件 .bpmn
+    database-schema-update: false # 配置应用启动是否检查Activiti数据表 false 标识不检查，以提高启动速度
+    history-level: full #保存历史数据级别设置为full最高级别，便于历史数据的追溯
 logging:
   config: classpath:logback-spring.xml

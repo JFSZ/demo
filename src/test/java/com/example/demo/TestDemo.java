@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author chenxue
@@ -42,6 +43,25 @@ public class TestDemo {
 
         System.out.println(StringUtils.isBlank("  "));
         System.out.println(StringUtils.isEmpty("  "));
+    }
+
+    private static int count = 0;
+    private static AtomicInteger atomicInteger = new AtomicInteger(0);
+    @Test
+    public void test() throws InterruptedException {
+
+        for (int i = 0; i < 10000; i++) {
+            new Thread(){
+                @Override
+                public void run() {
+                    count ++;
+                    atomicInteger.getAndIncrement();
+                }
+            }.start();
+        }
+        Thread.sleep(1000);
+        System.out.println(count);
+        System.out.println(atomicInteger.get());
     }
 
 }

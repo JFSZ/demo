@@ -1,7 +1,5 @@
 package com.example.demo.thinkinjava.chapter15;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @description: 自定义 泛型堆栈 实现内部链式存储机制
