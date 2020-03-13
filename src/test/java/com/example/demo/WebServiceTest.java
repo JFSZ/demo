@@ -6,6 +6,9 @@ import org.apache.axis.encoding.XMLType;
 import org.junit.Test;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description: webservice 调用远程接口测试
@@ -36,5 +39,21 @@ public class WebServiceTest {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void test(){
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        List<String> collect = list.stream().collect(Collectors.toList());
+        list.stream().forEach(o -> {
+            if(o.equalsIgnoreCase("C")){
+                collect.add("D");
+            }
+        });
+
+        System.out.println(collect.toString() + "---" + collect.size());
     }
 }

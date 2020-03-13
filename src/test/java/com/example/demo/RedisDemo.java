@@ -35,6 +35,11 @@ public class RedisDemo {
             System.out.println(person1.getName());
         }
     }
+
+    @Test
+    public void test1(){
+
+    }
 }
 @Data
 class Person{
@@ -51,3 +56,4 @@ class Person{
         this.birdaty = birdaty;
     }
 }
+

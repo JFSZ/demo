@@ -67,3 +67,14 @@ spring:
     history-level: full #保存历史数据级别设置为full最高级别，便于历史数据的追溯
 logging:
   config: classpath:logback-spring.xml
+myconfig:
+  name: Tom
+  age: 22
+  enable: true
+email:
+  foxmail:
+    username: qq-username
+    pwd: qq-pwd
+  yahoo:
+    username: 163-username
+    pwd: 163-pwd

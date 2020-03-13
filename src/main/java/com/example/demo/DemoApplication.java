@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 // 排除springboot 带的登陆验证
 @SpringBootApplication(exclude = {org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-                                    SecurityAutoConfiguration.class,DataSourceAutoConfiguration.class})
+                                    SecurityAutoConfiguration.class})
 @MapperScan(basePackages = "com.example.demo.dao")
 @EnableAsync
 //@EnableAspectJAutoProxy(exposeProxy = true) //使用 CGlib手动代理

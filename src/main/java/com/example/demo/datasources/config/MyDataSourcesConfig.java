@@ -5,6 +5,7 @@ import com.example.demo.datasources.dsenum.DataSourceEnum;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
@@ -32,6 +33,7 @@ public class MyDataSourcesConfig {
 
     @Bean
     @Primary
+    @DependsOn({"firstDataSource","secondDataSource"})
     public DynamicDataSource dataSource(DataSource firstDataSource,DataSource secondDataSource){
         Map<Object,Object> targetDataSource = new HashMap<>();
         targetDataSource.put(DataSourceEnum.DS1.getValue(),firstDataSource);
