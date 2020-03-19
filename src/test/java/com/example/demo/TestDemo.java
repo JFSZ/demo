@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.utils.MyArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -57,6 +60,17 @@ public class TestDemo {
         Thread.sleep(1000);
         System.out.println(count);
         System.out.println(atomicInteger.get());
+    }
+
+    @Test
+    public void demo3(){
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("b");
+        list.remove("b");
+        System.out.println(list.size());
     }
 
 }
