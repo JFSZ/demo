@@ -66,6 +66,9 @@ public class TestDemo {
     public void demo3(){
         System.out.println(Float.isNaN(1));
         System.out.println(15 >>> 1);
+        HashMap<String,String> map = null;
+        HashMap<String,String> maps = new HashMap<>(map);
+        System.out.println(maps);
     }
 
 }
