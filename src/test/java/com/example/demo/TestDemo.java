@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.utils.MyArrayList;
+import com.example.demo.utils.MyLinkList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -64,13 +64,8 @@ public class TestDemo {
 
     @Test
     public void demo3(){
-        MyArrayList<String> list = new MyArrayList<>();
-        list.add("a");
-        list.add("b");
-        list.add("c");
-        list.add("b");
-        list.remove("b");
-        System.out.println(list.size());
+        System.out.println(Float.isNaN(1));
+        System.out.println(15 >>> 1);
     }
 
 }
