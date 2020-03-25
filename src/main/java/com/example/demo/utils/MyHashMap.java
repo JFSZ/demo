@@ -1,5 +1,7 @@
 package com.example.demo.utils;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -160,15 +162,40 @@ public class MyHashMap<K,V> {
             if((p.hash == hash) &&
                     ((k = p.key) == key  || (key != null && key.equals(k)))){// 新增元素的hash 和key 与原i下标元素相同
                 e = p;
-            }else{// bux
+            }else{// 不相等。追加
+                if(p instanceof TreeNode){
+                    //则添加进 红黑树
+                }else {
+                    //则用开放寻址法 或者 拉链法
+                    for(int j = 0; ;++j){
+                        //循环终止条件 最后一盒元素添加上去就跳出循环. jdk1.8 链表插入方式为 尾部插入
+                        if((e = p.next) == null){
+                            p.next = new Node<>(hash,key,value,null);
+                            if(j > TREEIFY_THRESHOLD - 1){//需要由链表转换为红黑树
+                                treeifyBin(table,hash);
+                            }
+                            break;
+                        }
+                        //另外的循环终止条件 最后一盒元素添加上去就跳出循环. jdk1.8 链表插入方式为 尾部插入
+                        if(e.hash == hash && ( (k =e.key) == key || (key != null && key.equals(k)))){
+                            break;
+                        }
+                        p = e;
+                    }
+                }
 
             }
 
         }
-        //根据 hash 找到存储位置，如果该位置已有元素。再判断该节点是链表还是红黑树.如果是链表需要判断是否需要转换为红黑树
-        // 没有元素直接插入
         return value;
     }
+
+    //链表转换为红黑树
+    final void treeifyBin(Node<K,V>[] table,int hash){
+
+    }
+
+    //创建Node方法
     Node<K,V> newNode(int hash, K key, V value, Node<K,V> next){
         return new Node<>(hash,key,value,next);
     }
@@ -185,5 +212,17 @@ public class MyHashMap<K,V> {
     //扩容
     private Node<K,V>[] resize(){
         return null;
+    }
+
+    //TreeNode
+    static final class TreeNode<K,V>  extends MyHashMap.Node<K,V> {
+        TreeNode<K,V> parent;
+        TreeNode<K,V> left;
+        TreeNode<K,V> right;
+        TreeNode<K,V> prev;
+        boolean red;
+        public TreeNode(int hash,K key,V value,Node<K,V> next){
+            super(hash,key,value,next);
+        }
     }
 }
