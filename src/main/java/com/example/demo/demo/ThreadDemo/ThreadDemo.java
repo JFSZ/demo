@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * @description: 线程demo
+ * @description: 线程demo 测试
  * 并发三要素: 原子性 可见性 有序性
  * 出现线程安全的原因:
  * 线程切换带来原子性问题  缓存导致可见性 编译优化带来有序性
