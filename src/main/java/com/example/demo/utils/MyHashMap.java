@@ -23,6 +23,7 @@ public class MyHashMap<K,V> {
     private final int UNTREEIFY_THRESHOLD = 6;
     //
     private final int MIN_TREEIFY_CAPACITY = 64;
+    private int modCount;
 
     static class Node<K,V> implements Map.Entry<K,V>{
         final int hash;
@@ -158,6 +159,7 @@ public class MyHashMap<K,V> {
             t[i] = newNode(hash,key,value,null);
         }else{//则表示发生hash碰撞。  下标 i 已经有元素，分两种情况:key 相等则直接替换原来元素。
             // key不相等，需要用链表或者红黑树追加元素
+            // e 表示 新增节点元素
             Node<K,V> e;K k;
             if((p.hash == hash) &&
                     ((k = p.key) == key  || (key != null && key.equals(k)))){// 新增元素的hash 和key 与原i下标元素相同
@@ -165,6 +167,7 @@ public class MyHashMap<K,V> {
             }else{// 不相等。追加
                 if(p instanceof TreeNode){
                     //则添加进 红黑树
+                    e = ((TreeNode<K,V>)p).putTreeVal(this,table,hash,key,value);
                 }else {
                     //则用开放寻址法 或者 拉链法
                     for(int j = 0; ;++j){
@@ -183,16 +186,21 @@ public class MyHashMap<K,V> {
                         p = e;
                     }
                 }
-
             }
-
+            if(e != null){
+                V oldValue = e.getValue();
+                return oldValue;
+            }
         }
-        return value;
+        ++ modCount;
+        if(++size > threshold)
+            resize();
+        return null;
     }
 
     //链表转换为红黑树
     final void treeifyBin(Node<K,V>[] table,int hash){
-
+        //具体
     }
 
     //创建Node方法
@@ -209,8 +217,33 @@ public class MyHashMap<K,V> {
         return (key == null) ? 0:(h = key.hashCode()) ^ (h >>> 16);
     }
 
-    //扩容
+    //扩容 先确定 新容器的大小以及阈值。再把旧容器中的元素隐射到新容器节点上
     private Node<K,V>[] resize(){
+        Node<K,V>[] oldTab = table;
+        int oldSize = (oldTab == null) ? 0 : oldTab.length;
+        int oldThr = threshold;
+        int newCap, newThr = 0;
+        if(oldSize > 0){
+            if(oldSize > MAX_CAPACITY){
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            }else if((newCap = oldSize << 1) < MAX_CAPACITY
+                    && oldSize >= DEFAULT_INITIAL_CAPACITY){//如果旧容器扩容两倍比最大值小，并且大于默认值(16)
+                newThr = oldThr << 1;
+            }
+
+        }else if(oldThr > 0){// 对应指定容器大小、加载因子大小
+            newCap = oldThr;
+        }else{//无参构造
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            newThr = (int)(DEFAULT_INITIAL_CAPACITY * DEFAULT_LOAD_FACTOR);
+        }
+        if (newThr == 0) {
+            float f = newCap * DEFAULT_LOAD_FACTOR;
+            newThr = (newCap < MAX_CAPACITY  && f< (float)MAX_CAPACITY ) ? (int)f : Integer.MAX_VALUE;
+        }
+        threshold = newThr;
+        //赋值
         return null;
     }
 
@@ -223,6 +256,10 @@ public class MyHashMap<K,V> {
         boolean red;
         public TreeNode(int hash,K key,V value,Node<K,V> next){
             super(hash,key,value,next);
+        }
+        //向treeNode中添加元素
+        final Node<K,V> putTreeVal(MyHashMap<K,V> map,Node<K,V>[] tal,int hash,K key,V value){
+            return null;
         }
     }
 }
