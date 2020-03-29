@@ -1,8 +1,6 @@
 package com.example.demo.demo.ThreadDemo;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * @description: 线程demo 测试
@@ -22,6 +20,7 @@ public class ThreadDemo {
             @Override
             public void run() {
                 //do something
+                System.out.println("Thread 创建多线程");
             }
         });
 
@@ -29,7 +28,7 @@ public class ThreadDemo {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                System.out.println("Runnable 创建多线程");
             }
         });
         thread.start();
@@ -37,6 +36,23 @@ public class ThreadDemo {
         RunDemo runDemo = new RunDemo();
         Thread t1 = new Thread(runDemo);
         t1.start();
+
+
+
+        //Callable 接口FutureTask 实现多线程
+        MyCallAble myCallAble = new MyCallAble();
+        FutureTask<String> futureTask = new FutureTask<String>(myCallAble);
+        Thread thread1 = new Thread(futureTask);
+        thread1.start();
+        try {
+            String s = futureTask.get();
+            System.out.println(s);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 
     static class RunDemo implements Runnable{
@@ -47,10 +63,8 @@ public class ThreadDemo {
         }
     }
 
-    //Callable 接口FutureTask 实现多线程
-
-
 }
+
 class MyCallAble implements Callable<String>{
     public volatile int count;
     @Override
@@ -58,6 +72,9 @@ class MyCallAble implements Callable<String>{
         do{
             System.out.println(++ count);
         }while (count < 10);
-        return count + "";
+        return count + " callAble 返回的值";
+    }
+    public String doSomething(String str){
+        return "123";
     }
 }
