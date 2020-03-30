@@ -1,5 +1,7 @@
 package com.example.demo.demo.ThreadDemo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -7,6 +9,8 @@ import java.util.concurrent.*;
  * 并发三要素: 原子性 可见性 有序性
  * 出现线程安全的原因:
  * 线程切换带来原子性问题  缓存导致可见性 编译优化带来有序性
+ *
+ * 当下 更推荐使用 Executors 创建线程，并且可以使用线程池技术
  * @author: chenxue
  * @create: 2020-03-27 09:41
  **/
@@ -40,7 +44,35 @@ public class ThreadDemo {
 
 
         //Callable 接口FutureTask 实现多线程
+        //使用线程池 submit
+        // ExcutorService submit() 与execute()区别
+        // submit 有返回值并且可以捕捉到线程的异常。参数也不一致。  execute() 没有返回值，也不可以捕捉异常
         MyCallAble myCallAble = new MyCallAble();
+        List<Future<String>> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            /*FutureTask<String> futureTask = new FutureTask<String>(myCallAble);
+            executorService.execute(futureTask);*/
+            Future<String> submit = executorService.submit(myCallAble);
+            list.add(submit);
+        }
+        executorService.shutdown();
+        for (Future<String> future : list){
+            try {
+                String s = future.get();
+                System.out.println(s);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+                //有异常关闭
+                executorService.shutdownNow();
+            }
+        }
+
+
+       /*
+       利用 Thread 执行 FutureTask
+       MyCallAble myCallAble = new MyCallAble();
         FutureTask<String> futureTask = new FutureTask<String>(myCallAble);
         Thread thread1 = new Thread(futureTask);
         thread1.start();
@@ -51,7 +83,7 @@ public class ThreadDemo {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -70,11 +102,10 @@ class MyCallAble implements Callable<String>{
     @Override
     public String call() throws Exception {
         do{
+            if(count == 3)
+                throw new RuntimeException("有内鬼，终止交易!");
             System.out.println(++ count);
         }while (count < 10);
-        return count + " callAble 返回的值";
-    }
-    public String doSomething(String str){
-        return "123";
+        return Thread.currentThread().getName() + count + " callAble 返回的值";
     }
 }
