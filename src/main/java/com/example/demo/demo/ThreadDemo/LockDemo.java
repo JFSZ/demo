@@ -15,6 +15,27 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 public class LockDemo {
     public static void main(String[] args) {
+        LockDemo lockDemo = new LockDemo();
+        for (int i = 0; i < 4; i++) {
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    lockDemo.increment();
+                }
+            });
+        }
+
+        for (int i = 0; i < 4; i++) {
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    lockDemo.decrement();
+                }
+            });
+        }
+
     }
     //锁
     Lock lock = new ReentrantLock();
@@ -39,6 +60,7 @@ public class LockDemo {
                     }
                     list.add(current ++);
                     System.out.println("缓冲池中添加：" + current);
+                    condition.signalAll();
                 }
             }catch (InterruptedException e) {
                 e.printStackTrace();
@@ -65,6 +87,7 @@ public class LockDemo {
                     }
                     list.remove(current --);
                     System.out.println("缓冲池中移除:" + current);
+                    condition.signalAll();
                 }
             }catch (Exception e){
                 e.printStackTrace();
