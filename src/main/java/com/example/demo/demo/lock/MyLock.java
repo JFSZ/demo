@@ -7,6 +7,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 1、需要一个变量记录目前是哪个线程持有锁
  * 2、需要一个变量 记录是否阻塞。并且需要在多个线程见可见。
  * 3、获取锁/释放锁方法
+ * 一：实现基本锁功能
+ * 二：实现公平锁与非公平锁
+ * 三：condition 条件
  * @author: cx
  * @create: 2020-04-02 21:14
  **/
@@ -16,6 +19,33 @@ public class MyLock {
     private volatile AtomicInteger state = new AtomicInteger(0);
     private final Integer ZERO = 0;
     private final int ONE = 1;
+    //头部节点
+    private Node head;
+    //尾部节点
+    private Node tail;
+
+    class Node{
+        private Node prev;
+        private Node next;
+        private int waitState;
+        private Thread thread;
+        private Node nextWaiter;
+        public Node(){}
+        public Node(Thread thread,Node mode){
+            this.thread = thread;
+            this.nextWaiter = mode;
+        }
+
+    }
+    /**
+     * @Description: 统一获取资源 入口
+     * @param
+     * @Author: chenxue
+     * @Date: 2020/4/3  15:46
+     */
+    public final void acquire(){
+
+    }
 
     /**
      * @Author: cx
@@ -25,8 +55,8 @@ public class MyLock {
      * @return: boolean
      **/
     public boolean lock(){
-        //1、检查state 状态
-        //2、自旋
+
+        //自旋
         for (;;){
             //考虑重入锁
             if(getThread() == Thread.currentThread()){
@@ -50,7 +80,7 @@ public class MyLock {
         if(thread == null || thread != getThread())
             throw new RuntimeException("Thread Exception");
         setThread(null);
-        state.decrementAndGet();
+        state.set(0);
     }
 
     public Thread getThread() {
@@ -61,46 +91,6 @@ public class MyLock {
         this.thread = thread;
     }
 
-}
-
-class MyLock1{
-
-    private Thread ownerThread;
-
-    private volatile AtomicInteger state;
-
-
-    public MyLock1(){
-        state = new AtomicInteger(0);
-    }
-
-    public Thread getOwnerThread() {
-        return ownerThread;
-    }
-
-    public void setOwnerThread(Thread ownerThread) {
-        this.ownerThread = ownerThread;
-    }
-
-    public boolean lock(){
-        //可重入
-        for (;;) {
-            if (Thread.currentThread() == getOwnerThread()){
-                state.incrementAndGet();
-                return true;
-            }else if(state.compareAndSet(0,1)){
-                setOwnerThread(Thread.currentThread());
-            }
-        }
-    }
-
-    public void unlock(){
-        if (Thread.currentThread() != getOwnerThread()){
-            throw new RuntimeException("不是锁持有线程，不能解锁");
-        }
-        setOwnerThread(null);
-        state.decrementAndGet();
-    }
 }
 
 
