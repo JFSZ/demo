@@ -24,6 +24,14 @@ public class AbstractQueueSyncDemo implements Serializable {
         volatile Node pred;
         //后节点
         volatile Node next;
+        //节点从同步队列中取消
+        static final int CANCELLED = -1;
+        //后继节点的线程处于等待状态，如果当前节点释放同步状态会通知后继节点，使得后继节点的线程能够运行；
+        static final int SIGN = -1;
+        //当前节点进入等待队列中
+        static final int CONDITION = -2;
+        //表示下一次共享式同步状态获取将会无条件传播下去
+        static final int PROPAGATE = -3;
         //节点状态
         volatile int waitState;
         //当前线程
@@ -34,6 +42,14 @@ public class AbstractQueueSyncDemo implements Serializable {
         Node(Thread thread,Node model){
             this.thread = thread;
             this.nextWaiter = model;
+        }
+
+        final Node predecessor(){
+            Node p = pred;
+            if(p == null){
+                throw new NullPointerException();
+            }else
+                return p;
         }
     }
     //标识是否锁状态
@@ -57,13 +73,43 @@ public class AbstractQueueSyncDemo implements Serializable {
 
     //排队等待获取锁
     protected boolean acquireQueued(Node node,int arg){
-        for (;;){
-            if(tryAcquire(arg)){
-                return true;
-            }else{
-                //尝试两次 获取锁失败的话，可以让线程进入队列等待。等待之前需要处理一些逻辑。
-
+        //标识是否获取到锁
+        boolean failed = false;
+        try{
+            //标识释放阻塞锁
+            boolean interrpute = true;
+            for (;;){
+                Node p = node.predecessor();
+                // 如果 当前线程前节点为head ，并且获取锁成功。则返回.
+                if(p == head && tryAcquire(arg)){
+                    setHead(node);
+                    //释放前节点。让GC回收。
+                    p.next = null;
+                    failed = true;
+                    return true;
+                }
+                if(shouldParkAfterFailedAcquire(p,node) && parkAndCheckInterrupt())
+                    interrpute = true;
             }
+        }finally {
+
+        }
+    }
+
+    //加入等待队列。等待获取锁
+    protected boolean shouldParkAfterFailedAcquire(Node pred,Node node){
+        int w = pred.waitState;
+        //如果前一个节点状态为 SIGN，则直接返回
+        if(w ==  Node.SIGN){
+            return true;
+        }
+        if(w > 0){
+            //说明前一个节点取消,那么久无限循环找前一个节点不是取消的节点
+            do {
+                node.pred = pred = pred.pred;
+            }while (pred.waitState > 0);
+            pred.next = node;
+        }else {
 
         }
     }
@@ -113,7 +159,11 @@ public class AbstractQueueSyncDemo implements Serializable {
         Thread.currentThread().interrupt();
     }
 
-    private boolean compareAndSetTail(Node expect,Node update){
+    public void setHead(Node head) {
+        this.head = head;
+    }
+
+    private boolean compareAndSetTail(Node expect, Node update){
         return unsafe.compareAndSwapObject(this,tailOffset,expect,update);
     }
 
