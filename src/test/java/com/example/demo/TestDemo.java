@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * @author chenxue
@@ -64,6 +65,21 @@ public class TestDemo {
 
     @Test
     public void demo3(){
+        Thread t1 = new Thread(() -> {
+            try {
+                System.out.println( Thread.currentThread().getName()+ "执行");
+                LockSupport.park();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                System.out.println("finally块 ，输出语句");
+            }
+        },"a");
+        t1.start();
+        Thread t2 = new Thread(() -> {
+            System.out.println( Thread.currentThread().getName() + "执行");
+        },"b");
+        t2.start();
     }
 
 }
