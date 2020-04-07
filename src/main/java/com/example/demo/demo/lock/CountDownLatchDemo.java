@@ -18,13 +18,16 @@ public class CountDownLatchDemo {
         executorService.execute(() -> {
             //doWorking
             try {
+                System.out.println("子线程" + Thread.currentThread().getName() + "开始执行");
                 //模拟线程耗时操作
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }finally {
+                //可以通过一些开关。判断业务是否正确完毕。然后让计数器减一。放在这里可以防止业务代码报错导致主线程一直阻塞
+                countDownLatch.countDown();
+                System.out.println("子线程" + Thread.currentThread().getName() + "执行完毕");
             }
-            System.out.println("子线程" + Thread.currentThread().getName() + "开始执行");
-            countDownLatch.countDown();
         });
         executorService.shutdown();
 
@@ -32,12 +35,14 @@ public class CountDownLatchDemo {
         executorService1.execute(() -> {
             //doWorking
             try {
+                System.out.println("子线程" + Thread.currentThread().getName() + "开始执行");
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }finally {
+                System.out.println("子线程" + Thread.currentThread().getName() + "执行完毕");
+                countDownLatch.countDown();
             }
-            System.out.println("子线程" + Thread.currentThread().getName() + "开始执行");
-            countDownLatch.countDown();
         });
         executorService1.shutdown();
         try {
