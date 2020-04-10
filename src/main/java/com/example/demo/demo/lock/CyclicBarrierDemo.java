@@ -1,5 +1,8 @@
 package com.example.demo.demo.lock;
 
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -13,49 +16,100 @@ import java.util.concurrent.Executors;
  * @create: 2020-04-06 18:06
  **/
 public class CyclicBarrierDemo {
-
+    private static int count = 7;
     public static void main(String[] args) {
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(7);
-        Test test = new Test(cyclicBarrier);
-        for (int i = 0; i < 5; i++) {
-            ExecutorService executorService = Executors.newCachedThreadPool();
-            executorService.execute(test);
-            executorService.shutdown();
+        ExecutorService service = Executors.newCachedThreadPool();
+        HorseTest horseTest = new HorseTest(service);
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(count, horseTest);
+        for (int i = 0; i < count; i++) {
+            HorseDemo horseDemo = new HorseDemo(cyclicBarrier);
+            horseTest.add(horseDemo);
+            service.execute(horseDemo);
+        }
+    }
+
+    static class HorseTest implements Runnable{
+        private static List<HorseDemo> horseDemos = new ArrayList<>();
+        private static final int MAX_NUM = 70;
+        private ExecutorService service;
+        public HorseTest(ExecutorService service) {
+            this.service = service;
         }
 
-    }
-    static class Test implements Runnable{
-        private static CyclicBarrier cyclicBarrier;
-        private static int count = 0;
-        private int index = count ++;
-        private static Random random = new Random();
-        public Test(CyclicBarrier cyclicBarrier){
-            this.cyclicBarrier = cyclicBarrier;
-        }
-        public void doWork(){
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < count; i++) {
-                sb.append("*");
-            }
-            System.out.println("*" + index );
-        }
         @Override
         public void run() {
-            try {
-                while (Thread.interrupted()){
-                    synchronized (this){
-                        count += random.nextInt(3);
-                    }
-                    cyclicBarrier.await();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < MAX_NUM; i++) {
+                sb.append("=");
+            }
+            System.out.println(sb);
+
+            StringBuffer stringBuffer = new StringBuffer();
+            for (HorseDemo horseDemo : horseDemos){
+                System.out.println(horseDemo.doWork());
+            }
+            for (HorseDemo horseDemo : horseDemos){
+                if(horseDemo.getCount() >= MAX_NUM){
+                    System.out.println("winner is " + horseDemo);
+                    service.shutdownNow();
+                    return;
                 }
+            }
+            try {
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (BrokenBarrierException e) {
                 e.printStackTrace();
             }
         }
-        public synchronized int getCount(){
-            return count;
+        public void add(HorseDemo horseDemo){
+            horseDemos.add(horseDemo);
         }
     }
 }
+
+class HorseDemo implements Runnable{
+    private int count = 0;
+    private CyclicBarrier cyclicBarrier;
+    private static int order = 0;
+    public int index = order++;
+    private Random random = new Random();
+
+    public HorseDemo(CyclicBarrier cyclicBarrier){
+        this.cyclicBarrier = cyclicBarrier;
+    }
+
+    @Override
+    public void run() {
+        while (!Thread.interrupted()){
+                try {
+                    synchronized (this) {
+                        count += random.nextInt(3);
+                    }
+                    cyclicBarrier.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
+                }
+            }
+    }
+
+    public String doWork(){
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < getCount(); i++) {
+            sb.append("*");
+        }
+        sb.append(index);
+        return sb.toString();
+    }
+
+    public synchronized int getCount(){
+        return count;
+    }
+
+    @Override
+    public String toString() {
+        return "Horse " + index;
+    }
+}
+
