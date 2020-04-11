@@ -10,4 +10,7 @@ import com.example.demo.model.User;
  */
 
 public interface UserService extends IService<User> {
+    void doWork(User user);
+
+    void doWork1(User user);
 }
