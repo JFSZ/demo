@@ -32,6 +32,9 @@ public class ThreadPoolExecutorDemo {
                 myIgnorePolicy);
         for (int i = 0; i < 15; i++) {
             executor.execute(new MyTask(String.valueOf(i)));
+            if(i >= 14){
+                executor.shutdown();
+            }
         }
 
     }
@@ -55,7 +58,7 @@ public class ThreadPoolExecutorDemo {
      * @Author: chenxue
      * @Date: 2020/4/1  15:40
      */
-    static class MyIgnorePolicy implements RejectedExecutionHandler{
+    static class MyIgnorePolicy extends ThreadPoolExecutor.AbortPolicy{
 
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
