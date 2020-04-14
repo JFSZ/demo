@@ -1,9 +1,6 @@
 package com.example.demo.springDemo;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * @description:
@@ -12,7 +9,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  **/
 public class SpringTest {
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("");
-        BeanFactory beanFactory = new DefaultListableBeanFactory();
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        applicationContext.register(MyBeanConfig.class);
+        applicationContext.register(MyBeanFactoryPostProcessor.class);
+        applicationContext.refresh();
+        BeanDemo beanDemo = (BeanDemo)applicationContext.getBean("beanDemo");
+        System.out.println(beanDemo.toString());
     }
 }
+

@@ -3,11 +3,13 @@ package com.example.demo;
 import com.example.demo.dao.UserDao;
 import com.example.demo.datasources.annotation.DataSource;
 import com.example.demo.model.User;
+import com.example.demo.springDemo.BeanDemo;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
@@ -69,6 +71,18 @@ public class DemoApplicationTests {
         System.out.println(name);
         System.out.println(age);
         System.out.println(enable);
+    }
+
+
+    @Autowired
+    private BeanDemo beanDemo;
+
+    @Autowired
+    private BeanDemo beanDemo2;
+    @Test
+    public void test5(){
+        System.out.println(beanDemo.toString());
+        System.out.println(beanDemo2.toString());
     }
 
 }
