@@ -4,6 +4,7 @@ import com.example.demo.dao.UserDao;
 import com.example.demo.datasources.annotation.DataSource;
 import com.example.demo.model.User;
 import com.example.demo.springDemo.BeanDemo;
+import com.example.demo.springDemo.MyBeanPostProcessorTest;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
@@ -83,6 +84,14 @@ public class DemoApplicationTests {
     public void test5(){
         System.out.println(beanDemo.toString());
         System.out.println(beanDemo2.toString());
+    }
+
+    @Autowired
+    private MyBeanPostProcessorTest test;
+    @Test
+    public void test6(){
+        System.out.println(test.getName());
+        System.out.println(test.getAge());
     }
 
 }
