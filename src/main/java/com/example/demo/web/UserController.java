@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author chenxue
@@ -90,6 +92,7 @@ public class UserController {
     }
 
 
+    private static Lock lock = new ReentrantLock();
     /**
      * @Description: 测试接口多线程
      * @param
@@ -99,7 +102,7 @@ public class UserController {
     @PostMapping("/doSync")
     public String doSync(){
         ExecutorService executorService = Executors.newCachedThreadPool();
-        try {
+      /*  try {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -116,9 +119,28 @@ public class UserController {
             e.printStackTrace();
         }finally {
             executorService.shutdown();
+        }*/
+        lock.lock();
+        try {
+            //模拟业务处理时间
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }finally {
+            lock.unlock();
         }
+        System.out.println(Thread.currentThread().getName() + "业务完成");
         return "SUCCESS";
     }
 
+    public static void main(String[] args) {
+        UserController controller = new UserController();
+        for (int i = 0; i < 10000; i++) {
+            Thread thread = new Thread(() -> {
+                controller.doSync();
+            },"Thread-" + i);
+            thread.start();
+        }
+    }
 
 }
