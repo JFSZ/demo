@@ -29,7 +29,7 @@ public class TestDemo {
         user.setUserAge("22");
         User1 user1 = new User1();
         BeanUtils.copyProperties(user,user1);
-        System.out.println(user);
+        System.out.println(user1.getUserage() + " " + user1.getUsername());
     }
 
     @Test
@@ -81,6 +81,22 @@ public class TestDemo {
         },"b");
         t2.start();
     }
+
+    /**
+     * @Description:  Collections 工具类使用
+     * @Author: chenxue
+     * @Date: 2020/4/21  16:48
+     */
+    @Test
+    public void demo4(){
+        //Collections.emptyList() 返回一个静态list，大小为0.这样会节省创建对象的开销。并且返回的list不可以add、remove方法
+        List<String> list = Collections.emptyList();
+        System.out.println(list.size());
+        //报错  java.lang.UnsupportedOperationException
+        //list.add("1");
+    }
+
+
 
 }
 @Setter
