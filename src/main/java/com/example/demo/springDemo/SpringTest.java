@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 public class SpringTest {
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("");
+        context.getBean("");
         BeanFactory beanFactory = new DefaultListableBeanFactory();
         beanFactory.getBean("");
         ClassPathResource res = new ClassPathResource("");

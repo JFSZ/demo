@@ -3,6 +3,9 @@ package com.example.demo.springDemo;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 @Configuration
 public class MyBeanPostProcessorTest implements InitializingBean {
     private String name;
@@ -43,5 +46,15 @@ public class MyBeanPostProcessorTest implements InitializingBean {
                 "name='" + name + '\'' +
                 ", age='" + age + '\'' +
                 '}';
+    }
+
+    @PostConstruct
+    public void init(){
+        System.out.println("init-method 方法执行");
+    }
+
+    @PreDestroy
+    public void destroy(){
+        System.out.println("destroy-method 方法执行");
     }
 }

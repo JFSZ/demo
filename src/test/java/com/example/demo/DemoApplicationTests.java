@@ -11,10 +11,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -92,6 +96,47 @@ public class DemoApplicationTests {
     public void test6(){
         System.out.println(test.getName());
         System.out.println(test.getAge());
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j <=  i; j++) {
+                System.out.print(j  + "* "+ i + " = " + i*j + " ");
+            }
+            System.out.println();
+        }
     }
 
+    @Test
+    public void test7(){
+        MyLookUpDemo myLookUpDemo = new MyLookUpDemo() {
+            @Override
+            MyLookUpParent getBean() {
+                return new MyLookUpChild();
+            }
+        };
+        myLookUpDemo.doSomething();
+    }
+
+
+}
+@ComponentScan
+class MyLookUpParent{
+    public void showMe(){
+        System.out.println("i am parent");
+    }
+}
+
+class MyLookUpChild extends  MyLookUpParent{
+    @Override
+    public void showMe() {
+        super.showMe();
+        System.out.println("i am child");
+    }
+}
+abstract class MyLookUpDemo{
+
+    public void doSomething(){
+        this.getBean().showMe();
+    }
+
+    @Lookup
+    abstract MyLookUpParent getBean();
 }
