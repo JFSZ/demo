@@ -1,7 +1,10 @@
 package com.example.demo.springDemo;
 
+import com.example.demo.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @description:
@@ -10,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 public class MyBeanConfig {
+    @Autowired
+    private UserTest user;
     @Bean("beanDemo")
     public BeanDemo a1(){
         BeanDemo beanDemo = new BeanDemo();
@@ -26,4 +31,9 @@ public class MyBeanConfig {
         return beanDemo;
     }
 
+}
+
+@Component
+class UserTest{
+    private String name = "Tom";
 }
