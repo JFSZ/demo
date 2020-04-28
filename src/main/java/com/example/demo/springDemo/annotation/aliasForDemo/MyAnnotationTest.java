@@ -1,6 +1,8 @@
 package com.example.demo.springDemo.annotation.aliasForDemo;
 
 
+import lombok.Data;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
@@ -33,6 +35,12 @@ public class MyAnnotationTest {
         AnnotationSub sub1 = AnnotatedElementUtils.findMergedAnnotation(AnnotationDemo.class.getMethod("test1"),AnnotationSub.class);
         consumer1.accept(sub);
         consumer1.accept(sub1);
+
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigTest.class);
+        MyConfigTest myConfig = (MyConfigTest)applicationContext.getBean("myConfigTest");
+        System.out.println(myConfig.toString());
+
+
     }
 }
 
@@ -50,4 +58,22 @@ class AnnotationDemo{
 
     @AnnotationSub(location = "Rock")
     public void test1(){}
+}
+
+@MyConfig(name = "myConfigTest")
+class MyConfigTest{
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
