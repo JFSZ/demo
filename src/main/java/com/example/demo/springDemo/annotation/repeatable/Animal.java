@@ -1,4 +1,4 @@
-package com.example.demo.springDemo.annotation;
+package com.example.demo.springDemo.annotation.repeatable;
 
 import java.lang.annotation.*;
 

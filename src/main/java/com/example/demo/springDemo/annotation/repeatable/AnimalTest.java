@@ -1,4 +1,4 @@
-package com.example.demo.springDemo.annotation;
+package com.example.demo.springDemo.annotation.repeatable;
 
 public class AnimalTest {
     public static void main(String[] args) {
@@ -12,6 +12,7 @@ public class AnimalTest {
     }
 
 }
+
 @Animal(name = "Tim",subject = "Dog")
 @Animal(name = "Rock",subject = "Cat")
 class Test{
