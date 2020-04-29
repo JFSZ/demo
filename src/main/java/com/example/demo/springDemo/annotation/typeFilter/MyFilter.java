@@ -22,7 +22,7 @@ public class MyFilter implements TypeFilter {
         //获取正在扫描的类信息
         ClassMetadata classMetadata = metadataReader.getClassMetadata();
         String className = classMetadata.getClassName();
-        if(className.contains("")){
+        if(className.contains("all")){
             return true;
         }
         return false;

@@ -16,9 +16,7 @@ public class MyFilterTest {
 }
 
 @Configuration
-@ComponentScan(
-        useDefaultFilters = false,
-        includeFilters = {@Filter(type=FilterType.CUSTOM,classes = MyFilter.class)})
+@MyTypeFilter
 class TestDemo{
     private String name = "Tom";
 

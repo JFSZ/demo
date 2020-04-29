@@ -1,7 +1,6 @@
 package com.example.demo.springDemo.annotation.aliasForDemo;
 
 
-import lombok.Data;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -41,6 +40,9 @@ public class MyAnnotationTest {
         System.out.println(myConfig.toString());
 
 
+    }
+
+    public static void doWork(Object o) {
     }
 }
 
