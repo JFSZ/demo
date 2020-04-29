@@ -22,7 +22,9 @@ public class StreamTest {
         Stream<String> stream2 = Stream.of("a","b","c");
         stream2.flatMap(a -> Stream.of(a).map(b -> b.concat(".avg"))).forEach(b -> c.accept(b));
         //利用 Stream.generate()创建对象
-        Stream<Double> stream3 = Stream.generate(() -> Math.random()).limit(10);
+        Stream<Double> stream3 = Stream.generate(() -> Math.random()*100).limit(10);
+        //mapToInt 转换为Int
+        stream3.mapToInt(a -> a.intValue()).forEach(b -> c.accept(b));
 
     }
 }
