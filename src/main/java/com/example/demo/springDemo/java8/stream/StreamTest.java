@@ -1,5 +1,9 @@
 package com.example.demo.springDemo.java8.stream;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -25,6 +29,11 @@ public class StreamTest {
         Stream<Double> stream3 = Stream.generate(() -> Math.random()*100).limit(10);
         //mapToInt 转换为Int
         stream3.mapToInt(a -> a.intValue()).forEach(b -> c.accept(b));
+        // reduce 按照给定的规则进行操作 reduce((T identity, BinaryOperator<T> accumulator) 根据指定的初始化值，按照给定规则执行
+        //stream3.reduce(1.0,(a,b)-> a +b);
 
+        List<String> list = new ArrayList<>();
+        String s = list.stream().reduce((a, b) -> a + "/" + b).orElse("admin");
+        c.accept(s);
     }
 }
