@@ -6,7 +6,10 @@ package com.example.demo.springDemo.aop.staticProxy;
  * @create: 2020-04-30 10:57
  **/
 public class StaticProxyTest {
-
+    public static void main(String[] args) {
+        ProxySubject proxy = new ProxySubject();
+        proxy.doWork();
+    }
 }
 
 //抽象接口
@@ -20,13 +23,16 @@ class RealSubject implements Subject{
 
     @Override
     public void doWork() {
-
+        System.out.println("realSubject doWork...");
     }
 }
 
 //代理对象
 class ProxySubject implements Subject{
-    private RealSubject realSubject;
+    private RealSubject realSubject = new RealSubject();
+
+    public ProxySubject() {
+    }
 
     public ProxySubject(RealSubject realSubject) {
         this.realSubject = realSubject;
@@ -34,6 +40,8 @@ class ProxySubject implements Subject{
 
     @Override
     public void doWork() {
-        this.doWork();
+        System.out.println("ProxySubject doWork before");
+        realSubject.doWork();
+        System.out.println("ProxySubject doWork after");
     }
 }
